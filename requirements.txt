@@ -1,0 +1,6 @@
+Streamlit
+pandas
+plotly
+openpyxl
+reportlab
+kaleido   # optional for saving plotly charts as images
