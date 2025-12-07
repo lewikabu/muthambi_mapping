@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -19,6 +20,7 @@ st.set_page_config(
 def load_household_and_members(uploaded_file):
     """
     Load Kobo Excel export: assume first sheet = households, second = household_members.
+    uploaded_file can be a Streamlit UploadedFile or a path string.
     """
     xls = pd.ExcelFile(uploaded_file)
     if len(xls.sheet_names) < 2:
@@ -292,13 +294,31 @@ def build_pdf_report(filtered_main,
 
 st.title("Muthambi Sub-County – HPV Household Mapping Dashboard")
 
-# -------------------- Upload --------------------
+# -------------------- Upload + SAVE DEFAULT LOGIC --------------------
+DEFAULT_KOBO_PATH = "saved_kobo.xlsx"
+
 with st.sidebar:
     st.header("Upload Data File")
-    data_file = st.file_uploader("Upload Kobo Excel Export", type=["xlsx"])
+
+    uploaded = st.file_uploader("Upload Kobo Excel Export", type=["xlsx"])
+
+    if uploaded is not None:
+        # Button to save this file as the default used for future visitors
+        if st.button("Save this Kobo file as default (for all users)"):
+            with open(DEFAULT_KOBO_PATH, "wb") as f:
+                f.write(uploaded.getbuffer())
+            st.success("Saved. Future visitors will use this Kobo file by default (until the app is rebuilt).")
+        data_file = uploaded
+    else:
+        # If no file uploaded in this session, but a saved file exists, use it
+        if os.path.exists(DEFAULT_KOBO_PATH):
+            st.info("No file uploaded. Using saved Kobo file.")
+            data_file = DEFAULT_KOBO_PATH
+        else:
+            data_file = None
 
 if not data_file:
-    st.info("Please upload the Kobo export Excel file to begin.")
+    st.info("Please upload a Kobo export Excel file or save one as default.")
     st.stop()
 
 main_df, members_df = load_household_and_members(data_file)
@@ -632,11 +652,10 @@ with tab_members:
         else:
             st.info("Missing columns to compute school status for girls 10–14.")
 
-        # NEW: where girls were immunized (HPV1 place)
+        # Where girls were immunized (HPV1 place)
         st.markdown("#### Where girls 10–14 received HPV dose 1")
-        # Try to detect the HPV1 place-of-vaccination column
         possible_hpv_place_cols = [
-            "Where did you receive the HPV 1st Dose?",
+            "Where did you receive HPV 1st Dose ?",
             "Where did you receive HPV 1st dose ?",
             "Where did you receive HPV dose 1?",
             "Where did you receive HPV Dose 1 ?",
@@ -728,7 +747,6 @@ with tab_members:
                     subset=["_Location_latitude", "_Location_longitude"]
                 )
                 if not non_vacc.empty:
-                    # Colour by age in years
                     non_vacc["Age (yrs)"] = non_vacc["age"].astype(int).astype(str)
 
                     fig_nv = px.scatter_mapbox(
