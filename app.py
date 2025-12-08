@@ -8,7 +8,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 
 st.set_page_config(
-    page_title="Muthambi HPV Household Mapping Dashboard",
+    page_title="Muthambi Sub County Household Mapping Running Dashboard",
     layout="wide"
 )
 
@@ -536,7 +536,7 @@ with tab_overview:
 
     with col_right:
         # Penta 1 gap map
-        st.markdown("#### Map – children <5 who have NOT received Penta 1")
+        st.markdown("####Distribution Map – Zero Dose children <5 w by Age")
         required_cols = ["age", "Was Penta 1 Administered",
                          "_Location_latitude", "_Location_longitude"]
         if all(col in members_geo.columns for col in required_cols):
@@ -655,11 +655,8 @@ with tab_members:
         # Where girls were immunized (HPV1 place)
         st.markdown("#### Where girls 10–14 received HPV dose 1")
         possible_hpv_place_cols = [
-            "Where did you receive HPV 1st Dose ?",
+            "Where did you receive HPV 1st Dose?",
             "Where did you receive HPV 1st dose ?",
-            "Where did you receive HPV dose 1?",
-            "Where did you receive HPV Dose 1 ?",
-            "Where were you immunized with HPV 1st Dose ?",
         ]
         hpv_place_col = None
         for col in possible_hpv_place_cols:
@@ -1067,4 +1064,5 @@ st.download_button(
     file_name="HPV_Muthambi_Report.pdf",
     mime="application/pdf",
 )
+
 
