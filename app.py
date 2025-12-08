@@ -655,8 +655,8 @@ with tab_members:
         # Where girls were immunized (HPV1 place)
         st.markdown("#### Where girls 10–14 received HPV dose 1")
         possible_hpv_place_cols = [
-            "Where did you receive HPV 1st Dose?",
-            "Where did you receive HPV 1st dose ?",
+            "Where did you receive the HPV 1st Dose?",
+            "Where did you receive HPV 1st dose ?"
         ]
         hpv_place_col = None
         for col in possible_hpv_place_cols:
@@ -1064,5 +1064,6 @@ st.download_button(
     file_name="HPV_Muthambi_Report.pdf",
     mime="application/pdf",
 )
+
 
 
