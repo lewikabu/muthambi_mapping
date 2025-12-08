@@ -476,7 +476,7 @@ c10.metric(
     n_meas_yes_meas2_no
 )
 c11.metric(
-    "Under-1: Penta 1 = No",
+    "Penta 1 Zero Dose Under 1",
     n_u1_no_penta1
 )
 
@@ -1067,3 +1067,4 @@ st.download_button(
     file_name="HPV_Muthambi_Report.pdf",
     mime="application/pdf",
 )
+
