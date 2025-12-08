@@ -536,7 +536,7 @@ with tab_overview:
 
     with col_right:
         # Penta 1 gap map
-        st.markdown("####Distribution Map – Zero Dose children <5 w by Age")
+        st.markdown("#### Distribution Map – Zero Dose children <5 w by Age")
         required_cols = ["age", "Was Penta 1 Administered",
                          "_Location_latitude", "_Location_longitude"]
         if all(col in members_geo.columns for col in required_cols):
@@ -1064,6 +1064,7 @@ st.download_button(
     file_name="HPV_Muthambi_Report.pdf",
     mime="application/pdf",
 )
+
 
 
 
